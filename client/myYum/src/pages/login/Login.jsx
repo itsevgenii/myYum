@@ -16,6 +16,11 @@ export default function Login() {
         <img src={frame} alt="myYum logo" className={styles.frame} />
         <p className={styles.frameParagraph}>myYum</p>
       </div>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap"
+        rel="stylesheet"
+      />
+
       <h1 className={styles.welcome}>Welcome to</h1>
       <h2 className={styles.brand}>myYum</h2>
 
