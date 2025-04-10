@@ -1,0 +1,115 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* padding: 0.75rem 1.5rem; */
+  background-color: #f8dcd2;
+  border-radius: 1rem;
+  margin: 1rem;
+  font-family: "Inter", sans-serif;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo {
+  width: 240px;
+}
+
+.brand {
+  font-size: 2.6rem;
+  font-weight: 600;
+  color: #048520;
+  margin-left: -10rem;
+}
+
+.nav {
+  display: flex;
+  align-items: start;
+  gap: 3rem;
+  justify-content: start;
+  flex: 1;
+  padding-left: 3rem;
+}
+
+.nav a {
+  text-decoration: none;
+  font-weight: 600;
+  color: white;
+  text-transform: lowercase;
+  font-size: 2.2rem;
+}
+
+.nav a:hover {
+  text-decoration: underline;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logout {
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+.avatarName {
+  font-weight: 600;
+  font-size: 2.6rem;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: #fcdcd2;
+  background-image: url("https://www.bravotv.com/sites/bravo/files/legacy/photos/vanderpump-rules-season-1-gallery-photo-diary-katie-03.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 2px solid #000;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .logo {
+    width: 180px;
+  }
+
+  .brand {
+    font-size: 2rem;
+    margin-left: 0;
+  }
+
+  .nav {
+    flex-wrap: wrap;
+    padding-left: 0;
+    gap: 1.5rem;
+  }
+
+  .nav a {
+    font-size: 1.4rem;
+  }
+
+  .right {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .avatarName {
+    font-size: 1rem;
+  }
+}

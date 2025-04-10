@@ -7,7 +7,9 @@ const MainLayout = () => {
   return (
     <div>
       <Header />
-      <Outlet /> {/* Where nested routes render */}
+      <main>
+        <Outlet /> {/* Where nested routes render */}
+      </main>
     </div>
   );
 };
