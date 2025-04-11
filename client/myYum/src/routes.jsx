@@ -1,7 +1,7 @@
 import MainLayout from "./layout/MainLayout";
 import AddMeal from "./pages/AddMeal";
 import AllMeals from "./pages/AllMeals";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Login from "./pages/login/Login";
 
