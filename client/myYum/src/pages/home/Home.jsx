@@ -1,9 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import styles from "./Home.module.css";
 
+import del from "../../assets/del.png";
+import exp from "../../assets/exp.png";
+
 const Home = () => {
-  const [dataWeekDays, setDataWeekDays] = useState([]);
-  const [data, setData] = useState([
+  const [selectedDayId, setSelectedDayId] = useState(1);
+  const [meals, setMeals] = useState([]);
+
+  const userId = 1;
+  const MAX_MEALS = 7;
+
+  const daysOfTheWeek = [
     { id: 1, name: "Monday" },
     { id: 2, name: "Tuesday" },
     { id: 3, name: "Wednesday" },
@@ -11,52 +19,91 @@ const Home = () => {
     { id: 5, name: "Friday" },
     { id: 6, name: "Saturday" },
     { id: 7, name: "Sunday" },
-  ]);
-  const [meals, setMeals] = useState([]);
+  ];
 
-  const fetchData = async () => {
+  const fetchMealsByDay = async (dayId) => {
     try {
-      const response = await fetch("http://localhost:3003/");
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+      const response = await fetch(
+        `http://localhost:3003/${dayId}?userId=${userId}`
+      );
+      if (!response.ok) throw new Error("Network error");
+      const data = await response.json();
+
+      const actualMeals = data.meals || [];
+      const filledMeals = [...actualMeals];
+      while (filledMeals.length < MAX_MEALS) {
+        filledMeals.push({
+          id_meal: `placeholder-${filledMeals.length}`,
+          isPlaceholder: true,
+        });
       }
-      const dataWeekDays = await response.json();
-      const meals = dataWeekDays.meals;
-      setMeals(meals);
-      setDataWeekDays(dataWeekDays.weekDays);
-      console.log(dataWeekDays);
-    } catch (error) {
-      console.error("Error fetching data:", error);
+
+      setMeals(filledMeals);
+    } catch (err) {
+      console.error("Failed to fetch meals:", err);
     }
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchMealsByDay(selectedDayId);
+  }, [selectedDayId]);
 
   return (
-    <div className={styles.container}>
-      <ul className={styles.list}>
-        {data.map((item) => (
-          <li key={item.id} className={styles.item}>
-            <h1 className={styles.title}>
-              <a href="#" className={styles.link}>
-                {item.name}
-              </a>
-            </h1>
-          </li>
-        ))}
-      </ul>
-      <div className={styles.mealsContainer}>
-        <ul className={styles.mealsList}>
-          {meals.map((meal) => (
-            <li key={meal.id} className={styles.mealItem}>
-              <h3 className={styles.mealName}>{meal.name}</h3>
-              <p className={styles.mealDescription}>{meal.description}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
+    <div className={styles.grid}>
+      {daysOfTheWeek.map((day, index) => {
+        const meal = meals[index];
+
+        return (
+          <Fragment key={day.id}>
+            <div
+              className={`${styles.dayLabel} ${
+                selectedDayId === day.id ? styles.selected : ""
+              }`}
+              onClick={() => setSelectedDayId(day.id)}
+            >
+              {day.name}
+            </div>
+
+            <div className={styles.meal}>
+              {meal?.isPlaceholder ? (
+                <div className={`${styles.mealButton} ${styles.placeholder}`}>
+                  + Add Meal
+                </div>
+              ) : (
+                <div className={styles.mealButton}>
+                  <h5>
+                    {meal?.name} <span>{meal?.category}</span>
+                  </h5>
+                  <p>{meal?.description}</p>
+                </div>
+              )}
+            </div>
+
+            <div className={styles.icons}>
+              {!meal?.isPlaceholder && (
+                <>
+                  <img
+                    src={exp}
+                    alt="expand"
+                    className={styles.icon}
+                    onClick={() => console.log("Expand", meal)}
+                  />
+                  <img
+                    src={del}
+                    alt="delete"
+                    className={styles.icon}
+                    onClick={() => console.log("Delete", meal)}
+                  />
+                </>
+              )}
+            </div>
+
+            <div className={styles.preview}>
+              {/* Placeholder for future expanded content */}
+            </div>
+          </Fragment>
+        );
+      })}
     </div>
   );
 };
