@@ -18,7 +18,7 @@ CREATE TABLE week_days (
 CREATE TABLE meals (
     id_meal SERIAL PRIMARY KEY,
     category VARCHAR(50) NOT NULL,
-    name NVARCHAR(50) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     description VARCHAR(255) NOT NULL,
     id_user INT,
     FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE
