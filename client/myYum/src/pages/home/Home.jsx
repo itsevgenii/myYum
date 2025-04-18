@@ -31,7 +31,7 @@ const Home = () => {
   const fetchMealsByDay = async (dayId) => {
     try {
       const response = await fetch(
-        `http://localhost:3003/${dayId}?userId=${userId}`
+        `https://myyum.onrender.com/${dayId}?userId=${userId}`
       );
       if (!response.ok) throw new Error("Network error");
       const data = await response.json();
@@ -62,7 +62,7 @@ const Home = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:3003/${selectedDayId}?userId=${userId}`
+          `https://myyum.onrender.com/${selectedDayId}?userId=${userId}`
         );
         if (!response.ok) throw new Error("Network error");
         const data = await response.json();
@@ -136,7 +136,7 @@ const Home = () => {
 
   const handleDeleteMeal = async (mealId) => {
     try {
-      const response = await fetch(`http://localhost:3003/${mealId}`, {
+      const response = await fetch(`https://myyum.onrender.com/${mealId}`, {
         method: "DELETE",
       });
       if (!response.ok) throw new Error("Network error");
@@ -154,7 +154,7 @@ const Home = () => {
 
   const handleAddMeal = async (dayId, mealId) => {
     try {
-      const response = await fetch(`http://localhost:3003/${dayId}`, {
+      const response = await fetch(`https://myyum.onrender.com/${dayId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

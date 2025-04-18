@@ -14,7 +14,9 @@ const AllMeals = () => {
 
   const fetchMeals = async () => {
     try {
-      const response = await fetch(`http://localhost:3003/?userId=${userId}`);
+      const response = await fetch(
+        `https://myyum.onrender.com/?userId=${userId}`
+      );
       if (!response.ok) throw new Error("Network error");
       const data = await response.json();
       const actualMeals = data.meals || [];
