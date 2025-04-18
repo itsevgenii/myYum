@@ -8,6 +8,7 @@ dotenv.config();
 import db from "./db/db.js";
 
 import week_daysRouter from "./routes/week_days.js";
+import authRouter from "./routes/auth.js";
 
 // import usersRouter from "./routes/users.js";
 // import ratingsRouter from "./routes/rating.js";
@@ -21,12 +22,18 @@ app.use(morgan("dev"));
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+  console.log("🔍 Request URL:", req.originalUrl);
+  next();
+});
+
 // app.get("/", (req, res) => {
 //   res.send("Hello, World!");
 // });
 
 // mdbConnect();
 
+app.use("/", authRouter);
 app.use("/", week_daysRouter);
 
 // app.use("/ratings", ratingsRouter);

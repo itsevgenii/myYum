@@ -64,3 +64,196 @@
 .loginButton:hover {
   background-color: #e6826a;
 }
+
+.modalContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 4rem;
+  margin: 0 auto;
+  width: 50%;
+  height: 60%;
+
+  background-color: #ea9881;
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  position: fixed;
+
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+  /* -webkit-backdrop-filter: blur(5px); */
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 9);
+  /* hor ver blur spr col/int */
+  opacity: 0.9;
+  transition: opacity 2.3s ease;
+}
+
+.modalHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 2rem 2rem;
+}
+
+.modalHeader .frame {
+  width: 50%;
+}
+
+.modalContainer h2 {
+  font-size: 5rem;
+  color: #fff9f4;
+  margin: 0 0 0 -11rem;
+  /* position: fixed;
+  top: 0;
+  left: 0; */
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 2rem;
+  z-index: 1001;
+  margin-top: 10rem;
+}
+
+.sectionInfo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  width: 100%;
+  padding: 0.5rem 0;
+}
+
+.label {
+  min-width: 120px; /* make all labels equal width */
+  font-weight: bold;
+  color: #fff9f4;
+  background-color: #007acc;
+  border-radius: 20px;
+  padding: 0.1rem 1.5rem;
+  text-align: center;
+  padding: 1rem 1rem;
+}
+
+.input {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  font-size: 1.5rem;
+  border-radius: 20px;
+  border: none;
+  background: #fff9f4;
+  color: #007acc;
+}
+
+/* button container and button styling */
+.buttonContainer {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5rem;
+}
+
+.submitButton {
+  align-self: center;
+  min-width: 200px;
+  min-height: 60px;
+  display: inline-flex;
+  font-family: "Nunito", sans-serif;
+  font-size: 22px;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 1.3px;
+  font-weight: 700;
+  color: #313133;
+  background: #4fd1c5;
+  background: linear-gradient(
+    90deg,
+    rgba(129, 230, 217, 1) 0%,
+    rgba(79, 209, 197, 1) 100%
+  );
+  border: none;
+  border-radius: 1000px;
+  box-shadow: 12px 12px 24px rgba(79, 209, 197, 0.64);
+  transition: all 0.3s ease-in-out 0s;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  padding: 10px;
+}
+
+.submitButton::before {
+  content: "";
+  border-radius: 1000px;
+  min-width: calc(200px + 12px);
+  min-height: calc(60px + 12px);
+  border: 6px solid #00ffcb;
+  box-shadow: 0 0 60px rgba(0, 255, 203, 0.64);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.submitButton:hover,
+.submitButton:focus {
+  color: #313133;
+  transform: translateY(-6px);
+}
+
+.submitButton:hover::before,
+.submitButton:focus::before {
+  opacity: 1;
+}
+
+.submitButton::after {
+  content: "";
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  border: 6px solid #00ffcb;
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring 1.5s infinite;
+}
+
+.submitButton:hover::after,
+.submitButton:focus::after {
+  animation: none;
+  display: none;
+}
+
+@keyframes ring {
+  0% {
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+  }
+  100% {
+    width: 200px;
+    height: 200px;
+    opacity: 0;
+  }
+}
+
+.modalRegister {
+  margin-top: 1rem;
+}

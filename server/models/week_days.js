@@ -20,6 +20,7 @@ export async function getAllMealsByUserId(userId) {
         m.name AS meal_name,
         m.description,
         m.category,
+        m.id_user,
         COALESCE(
           json_agg(
             DISTINCT jsonb_build_object(
@@ -35,10 +36,11 @@ export async function getAllMealsByUserId(userId) {
       FROM meals m
       LEFT JOIN meal_ingredients mi ON m.id_meal = mi.id_meal
       LEFT JOIN ingredients i ON mi.id_ingredient = i.id_ingredient
-      WHERE m.user_id = $1
+      WHERE m.id_user = $1
       GROUP BY m.id_meal`,
       [userId]
     );
+    return result;
   } catch (error) {
     console.error("Error fetching meals:", error);
     return []; // fallback in case of error
@@ -111,6 +113,34 @@ GROUP BY m.id_meal;
     return result;
   } catch (error) {
     console.error("Error fetching meals by week day and user ID:", error);
+    return { rows: [] };
+  }
+}
+
+export async function addMealsByWeekDayAndUserId(
+  weekDayId,
+  userId,
+  mealId,
+  mealName,
+  mealDescription,
+  mealCategory
+) {
+  try {
+    const result = await db.query(
+      `INSERT INTO meals (id_meal, name, description, category, id_user)
+        VALUES ($1, $2, $3, $4, $5)`,
+      [mealId, mealName, mealDescription, mealCategory, userId]
+    );
+
+    await db.query(
+      `INSERT INTO meal_plans (id_day, id_meal, id_user)
+        VALUES ($1, $2, $3)`,
+      [weekDayId, mealId, userId]
+    );
+
+    return result;
+  } catch (error) {
+    console.error("Error adding meals by week day and user ID:", error);
     return { rows: [] };
   }
 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
+import { useUser } from "../../context/UserContext";
 import styles from "./Home.module.css";
 
 import del from "../../assets/del.png";
@@ -7,10 +8,14 @@ import exp from "../../assets/exp.png";
 const Home = () => {
   const [selectedDayId, setSelectedDayId] = useState(1);
   const [meals, setMeals] = useState([]);
+  const [addMealClicked, setAddMealClicked] = useState(false);
 
   const [selectedMeal, setSelectedMeal] = useState(null);
 
-  const userId = 1;
+  // const userId = 1;
+  const { dispatch, state } = useUser();
+  const userId = state.userId;
+  console.log("User ID from context:", userId);
   const MAX_MEALS = 7;
 
   const daysOfTheWeek = [
@@ -32,6 +37,8 @@ const Home = () => {
       const data = await response.json();
 
       const actualMeals = data.meals || [];
+      //actual meals is for the current day
+      console.log("Actual meals:", actualMeals);
       const filledMeals = [...actualMeals];
       while (filledMeals.length < MAX_MEALS) {
         filledMeals.push({
@@ -47,7 +54,12 @@ const Home = () => {
   };
 
   useEffect(() => {
+    if (!userId) return; // 👈 Don't run the effect if userId is not ready
     const fetchAndSetMeals = async () => {
+      if (!userId) {
+        return <p>Loading your meal plan...</p>;
+      }
+
       try {
         const response = await fetch(
           `http://localhost:3003/${selectedDayId}?userId=${userId}`
@@ -107,6 +119,11 @@ const Home = () => {
           null;
 
         setSelectedMeal(defaultMeal);
+
+        // dispatch({
+        //   type: "ADD_MEAL",
+        //   payload: finalMeals,
+        // });
       } catch (err) {
         console.error("Failed to fetch meals:", err);
       }
@@ -135,8 +152,48 @@ const Home = () => {
     }
   };
 
+  const handleAddMeal = async (dayId, mealId) => {
+    try {
+      const response = await fetch(`http://localhost:3003/${dayId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId, mealId }),
+      });
+      if (!response.ok) throw new Error("Network error");
+      const data = await response.json();
+      console.log("Meal added:", data);
+      // Optionally, update the meals state to include the new meal
+      setMeals((prevMeals) => [...prevMeals, data]);
+      // Optionally, refetch meals or update state to reflect addition
+      setMeals((prevMeals) =>
+        prevMeals.filter((meal) => meal.id_meal !== mealId)
+      );
+    } catch (err) {
+      console.error("Failed to add meal:", err);
+    }
+  };
+
   return (
     <div className={styles.grid}>
+      <div>
+        <button
+          onClick={() => {
+            setAddMealClicked(!addMealClicked);
+            console.log("Add meal clicked: ", addMealClicked);
+          }}
+        >
+          Add meal
+        </button>
+        {addMealClicked && (
+          <div className={styles.modalContainer}>
+            <div className={styles.modalHeader}>
+              <h2 className={styles.modalTitle}>Add Meal</h2>
+            </div>
+          </div>
+        )}
+      </div>
       {daysOfTheWeek.map((day, index) => {
         const meal = meals[index];
         return (
@@ -155,7 +212,15 @@ const Home = () => {
             <div className={styles.meal}>
               {meal?.isPlaceholder ? (
                 <div className={`${styles.mealButton} ${styles.placeholder}`}>
-                  + Add Meal
+                  <button
+                    onClick={() => handleAddMeal(day.id, meal.id_meal)}
+                    className={styles.addButton}
+                  >
+                    Add Meal
+                  </button>
+                  <p>
+                    <em>Click to add a meal</em>
+                  </p>
                 </div>
               ) : (
                 <div className={styles.mealButton}>

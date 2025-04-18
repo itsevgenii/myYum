@@ -1,0 +1,113 @@
+.wrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.meal {
+  display: flex;
+  flex-flow: column nowrap;
+
+  background: linear-gradient(135deg, #ffffff 0%, #f8dcd2 40%);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+
+  box-shadow: 2px 2px 5px 1px rgba(0, 238, 255, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  border-radius: 20px;
+
+  padding: 1rem;
+  margin: 1rem 0.5rem;
+
+  /* width: 75%; */
+}
+
+.title {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  font-weight: 700;
+  font-size: x-large;
+  letter-spacing: 0.1rem;
+  /* border: 2px solid #007acc1e; */
+  /* border-radius: 20px; */
+  box-shadow: 0px 2px 5px 0px rgba(0, 238, 255, 0.2);
+  /* hor ver blur spr col/int */
+}
+
+.description {
+  align-self: flex-start;
+  align-items: flex-start;
+  font-weight: 400;
+  line-height: 1.5rem;
+  text-align: left;
+  box-shadow: 0px 2px 5px 0px rgba(0, 238, 255, 0.2);
+}
+
+.img_ingredientsContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: start;
+  align-items: flex-start;
+  gap: 7rem;
+}
+
+.image {
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.image img {
+  max-width: 350px;
+  width: auto;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0px 2px 5px 0px rgba(0, 238, 255, 0.2);
+}
+
+.ingredientsTable {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 1rem;
+  width: 100%;
+  gap: 0.3rem;
+}
+
+.tableHeader,
+.tableRow {
+  display: flex;
+  justify-content: flex-start;
+  gap: 2rem;
+  font-size: 0.9rem;
+}
+
+.tableHeader {
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.3rem;
+}
+
+.tableHeader span,
+.tableRow span {
+  width: 120px;
+  display: inline-block;
+}

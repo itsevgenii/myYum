@@ -94,3 +94,28 @@
   padding: 1rem;
   border-left: 1px solid #ddd;
 }
+
+.modalContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 4rem;
+  margin: 0 auto;
+  width: 50%;
+  height: 60%;
+
+  background-color: #ea9881;
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  position: fixed;
+
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+  /* -webkit-backdrop-filter: blur(5px); */
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 9);
+  /* hor ver blur spr col/int */
+  opacity: 0.9;
+  transition: opacity 2.3s ease;
+}
