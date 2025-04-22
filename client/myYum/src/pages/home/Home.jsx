@@ -31,6 +31,14 @@ const Home = () => {
   console.log("User ID from context:", userId);
 
   const MAX_MEALS = 7;
+  const meal_categories = [
+    { id: 1, name: "breakfast" },
+    { id: 2, name: "lunch" },
+    { id: 3, name: "dinner" },
+    { id: 4, name: "snack" },
+    { id: 5, name: "brunch" },
+    { id: 6, name: "supper" },
+  ];
 
   const fetchMealsByDay = async (dayId) => {
     try {
@@ -291,6 +299,32 @@ const Home = () => {
       {addMealClicked && (
         <div className={styles.addMealModal}>
           <h4>Add Meal</h4>
+          <div className={styles.addMealForm}>
+            <label htmlFor="Name">Name:</label>
+            <input type="text" id="Name" />
+            <label htmlFor="description">Description:</label>
+            <input type="text" id="description" />
+            <label htmlFor="ingredients">Ingredients:</label>
+            <input type="text" id="ingredients" />
+            <label htmlFor="quantity">Quantity:</label>
+            <input type="text" id="quantity" />
+            <label htmlFor="unit">Unit:</label>
+            <input type="text" id="unit" />
+            <label htmlFor="status">Status:</label>
+            <input type="text" id="status" />
+            <label htmlFor="image" className={styles.label}>
+              Meal Picture
+            </label>
+            <input type="file" accept="image/*" className={styles.fileInput} />
+            <label htmlFor="category">Category:</label>
+            <select id="category">
+              {meal_categories.map((category) => (
+                <option key={category.id} value={category.name}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
           <button
             onClick={() => {
               handleAddMeal(selectedDayId, selectedMeal.id_meal);
