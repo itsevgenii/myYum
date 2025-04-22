@@ -298,7 +298,6 @@ const Home = () => {
       </div>
       {addMealClicked && (
         <div className={styles.addMealModal}>
-          <h4>Add Meal</h4>
           <div className={styles.addMealForm}>
             <label htmlFor="Name">Name:</label>
             <input type="text" id="Name" />
@@ -325,15 +324,17 @@ const Home = () => {
               ))}
             </select>
           </div>
-          <button
-            onClick={() => {
-              handleAddMeal(selectedDayId, selectedMeal.id_meal);
-              setAddMealClicked(false);
-            }}
-          >
-            Add
-          </button>
-          <button onClick={() => setAddMealClicked(false)}>Cancel</button>
+          <div className="modal-button">
+            <button
+              onClick={() => {
+                handleAddMeal(selectedDayId, selectedMeal.id_meal);
+                setAddMealClicked(false);
+              }}
+            >
+              Add
+            </button>
+            <button onClick={() => setAddMealClicked(false)}>Cancel</button>
+          </div>
         </div>
       )}
     </div>
