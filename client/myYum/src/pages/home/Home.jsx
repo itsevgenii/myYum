@@ -2,22 +2,9 @@ import React, { useState, useEffect, Fragment } from "react";
 import { useUser } from "../../context/UserContext";
 import styles from "./Home.module.css";
 
-import del from "../../assets/del.png";
-import exp from "../../assets/exp.png";
-
 const Home = () => {
-  const [selectedDayId, setSelectedDayId] = useState(1);
-  const [meals, setMeals] = useState([]);
-  const [addMealClicked, setAddMealClicked] = useState(false);
-
-  const [selectedMeal, setSelectedMeal] = useState(null);
-
-  // const userId = 1;
-  const { dispatch, state } = useUser();
-  const userId = state.userId;
-  console.log("User ID from context:", userId);
-  const MAX_MEALS = 7;
-
+  let today = new Date();
+  let day = today.getDay();
   const daysOfTheWeek = [
     { id: 1, name: "Monday" },
     { id: 2, name: "Tuesday" },
@@ -27,6 +14,23 @@ const Home = () => {
     { id: 6, name: "Saturday" },
     { id: 7, name: "Sunday" },
   ];
+  console.log("Today is: ", day);
+
+  const [selectedDayId, setSelectedDayId] = useState(day);
+  daysOfTheWeek[day - 1].id = day; // Set the id of the current day to the current day of the week
+  console.log("today is: ", daysOfTheWeek[day - 1].name);
+
+  const [meals, setMeals] = useState([]);
+  const [addMealClicked, setAddMealClicked] = useState(false);
+
+  const [selectedMeal, setSelectedMeal] = useState(null);
+
+  // const userId = 1;
+  const { dispatch, state } = useUser();
+  const userId = state.userId;
+  console.log("User ID from context:", userId);
+
+  const MAX_MEALS = 7;
 
   const fetchMealsByDay = async (dayId) => {
     try {
@@ -176,125 +180,128 @@ const Home = () => {
   };
 
   return (
-    <div className={styles.grid}>
-      <div>
-        <button
-          onClick={() => {
-            setAddMealClicked(!addMealClicked);
-            console.log("Add meal clicked: ", addMealClicked);
-          }}
-        >
-          Add meal
-        </button>
-        {addMealClicked && (
-          <div className={styles.modalContainer}>
-            <div className={styles.modalHeader}>
-              <h2 className={styles.modalTitle}>Add Meal</h2>
-            </div>
+    <div className={styles.Home}>
+      <div className={styles.weekDays}>
+        {daysOfTheWeek.map((day) => (
+          <div
+            key={day.id}
+            className={`${styles.dayLabel} ${
+              selectedDayId === day.id ? styles.selected : ""
+            }`}
+            onClick={() => {
+              setSelectedDayId(day.id);
+              fetchMealsByDay(day.id);
+            }}
+          >
+            {day.name}
           </div>
-        )}
+        ))}
       </div>
-      {daysOfTheWeek.map((day, index) => {
-        const meal = meals[index];
-        return (
-          <Fragment key={day.id}>
-            {/* Day label */}
-            <div
-              className={`${styles.dayLabel} ${
-                selectedDayId === day.id ? styles.selected : ""
-              }`}
-              onClick={() => setSelectedDayId(day.id)}
-            >
-              {day.name}
-            </div>
-
-            {/* Meal button */}
-            <div className={styles.meal}>
-              {meal?.isPlaceholder ? (
-                <div className={`${styles.mealButton} ${styles.placeholder}`}>
-                  <button
-                    onClick={() => handleAddMeal(day.id, meal.id_meal)}
-                    className={styles.addButton}
-                  >
-                    Add Meal
-                  </button>
-                  <p>
-                    <em>Click to add a meal</em>
-                  </p>
+      <div className={styles.mealsContainer}>
+        <div className={styles.MealsCards}>
+          {/* {meals &&
+            meals.map((meal) => (
+              <div key={meal.id_meal} className={styles.mealCard}>
+                <div className={styles.mealDetails}>
+                  <h5>{meal.category}</h5>
+                  <h4>{meal.meal_name}</h4>
+                  <p>{meal.description}</p>
+                </div>
+                <div
+                  className={styles.icons}
+                  onClick={() => {
+                    setSelectedMeal(meal);
+                  }}
+                >
+                  😋
+                </div>
+              </div>
+            ))} */}
+          {meals &&
+            meals.map((meal) =>
+              meal.isPlaceholder ? (
+                <div
+                  key={meal.id_meal}
+                  className={`${styles.mealCard} ${styles.placeholderCard}`}
+                  onClick={() => setAddMealClicked(true)}
+                >
+                  <div className={styles.placeholderContent}>
+                    <span className={styles.playIcon}>+</span>
+                    <p>Add Meal</p>
+                  </div>
                 </div>
               ) : (
-                <div className={styles.mealButton}>
-                  <h5>
-                    {meal?.name} <span>{meal?.category}</span>
-                  </h5>
-                  <p>{meal?.description}</p>
+                <div key={meal.id_meal} className={styles.mealCard}>
+                  <div className={styles.mealDetails}>
+                    <h5>{meal.category}</h5>
+                    <h4>{meal.meal_name}</h4>
+                    <p>{meal.description}</p>
+                  </div>
+                  <div
+                    className={styles.icons}
+                    onClick={() => {
+                      setSelectedMeal(meal);
+                    }}
+                  >
+                    😋
+                  </div>
                 </div>
-              )}
-            </div>
-
-            {/* Action icons */}
-            <div className={styles.icons}>
-              {!meal?.isPlaceholder && (
-                <>
-                  <img
-                    src={exp}
-                    alt="expand"
-                    className={styles.icon}
-                    onClick={() =>
-                      setSelectedMeal((prev) =>
-                        prev?.id_meal === meal.id_meal ? null : meal
-                      )
-                    }
-                  />
-                  <img
-                    src={del}
-                    alt="delete"
-                    className={styles.icon}
-                    onClick={() => handleDeleteMeal(meal.id_meal)}
-                  />
-                </>
-              )}
-            </div>
-          </Fragment>
-        );
-      })}
-
-      {/* 👇 Preview column, now only once, stretches over all rows */}
-      <div
-        className={styles.preview}
-        style={{ gridRow: `1 / span ${MAX_MEALS}` }}
-      >
-        {selectedMeal && !selectedMeal.isPlaceholder && (
-          <div className={styles.mealDetails}>
-            <h4>{selectedMeal.meal_name}</h4>
-            <p>
-              <strong>Category:</strong> {selectedMeal.category}
-            </p>
-            <p>
-              <strong>Description:</strong> {selectedMeal.description}
-            </p>
-
-            {Array.isArray(selectedMeal.ingredients) &&
-            selectedMeal.ingredients.length > 0 ? (
-              <>
-                <h5>Ingredients:</h5>
-                <ul>
-                  {selectedMeal.ingredients.map((ingredient) => (
-                    <li key={ingredient.id_ingredient}>
-                      {ingredient.quantity} {ingredient.unit} of{" "}
-                      {ingredient.name} ({ingredient.status})
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <p>
-                <em>No ingredients found for this meal.</em>
-              </p>
+              )
             )}
-          </div>
-        )}
+        </div>
+        <div className={styles.expandedMealContainer}>
+          {selectedMeal && !selectedMeal.isPlaceholder && (
+            <div className={styles.expandedMeal}>
+              <h4>{selectedMeal.meal_name}</h4>
+              <p>
+                <strong>Category:</strong> {selectedMeal.category}
+              </p>
+              <p>
+                <strong>Description:</strong> {selectedMeal.description}
+              </p>
+              {Array.isArray(selectedMeal.ingredients) &&
+              selectedMeal.ingredients.length > 0 ? (
+                <>
+                  <h5>Ingredients:</h5>
+                  <ul>
+                    {selectedMeal.ingredients.map((ingredient) => (
+                      <li key={ingredient.id_ingredient}>
+                        {ingredient.quantity} {ingredient.unit} of{" "}
+                        {ingredient.name} ({ingredient.status})
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <p>
+                  <em>No ingredients found for this meal.</em>
+                </p>
+              )}
+              <div className={styles.imageContainer}>
+                <img
+                  src="https://www.shutterstock.com/image-photo/vegan-burrito-bowl-filled-rice-600nw-2493432903.jpg"
+                  alt={selectedMeal.meal_name}
+                  className={styles.image}
+                />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
+      {addMealClicked && (
+        <div className={styles.addMealModal}>
+          <h4>Add Meal</h4>
+          <button
+            onClick={() => {
+              handleAddMeal(selectedDayId, selectedMeal.id_meal);
+              setAddMealClicked(false);
+            }}
+          >
+            Add
+          </button>
+          <button onClick={() => setAddMealClicked(false)}>Cancel</button>
+        </div>
+      )}
     </div>
   );
 };

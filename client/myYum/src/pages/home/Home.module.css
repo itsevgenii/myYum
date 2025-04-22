@@ -1,121 +1,291 @@
-.grid {
-  display: grid;
-  grid-template-rows: repeat(7, auto);
-  grid-template-columns: 1fr 1.5fr 0.5fr 3fr;
-  gap: 0.5rem;
-  height: 90vh;
-  width: 100vw;
-  padding: 1rem;
-  background-color: #fefbf3;
+.weekDays {
   box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 2.5rem;
 }
 
-/* Column 1 */
 .dayLabel {
-  grid-column: 1 / 2;
-  max-height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #eec3b4;
-  align-self: flex-start;
-  border-radius: 20px;
-  font-weight: bold;
-  color: #fff;
+  /* box-sizing: border-box; */
+  min-width: 5%;
+  min-width: 3%;
+  height: 30px;
+  border: 1px solid transparent; /* 👈 fixes the shifting */
+  border-radius: 1rem;
+  align-content: center;
+  text-align: center;
+  padding: 0.5rem 1.5rem;
+  margin: 0rem 0.5rem;
   cursor: pointer;
-  border-left: 6px solid #007acc;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  /* margin: 0.5rem 0; */
-  padding: 2rem 0;
+  transition: all 0.3s linear;
 }
 
-.dayLabel:hover,
-.selected {
-  background-color: #007acc;
+.dayLabel:hover {
+  border-left: 1px solid red;
+  border-right: 1px solid blue;
+  border-bottom: green 1px solid;
+  border-top: orange 1px solid;
+  /* box-shadow:
+    rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 4px 8px 3px; */
+  z-index: 1;
 }
 
-/* Column 2 */
-.meal {
-  grid-column: 2 / 3;
+.dayLabel.selected {
+  background-color: #f8dcd2;
+  border: 1px solid transparent; /* 👈 fixes the shifting */
+  color: #fff;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0 4px 4px 0,
+    rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
+  transform: scale(1.55);
+}
+
+.mealsContainer {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
-.mealButton {
-  align-self: flex-start;
-  background-color: #eec3b4;
-  padding: 0.75rem 0rem;
-  border-radius: 20px;
+.MealsCards {
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 2rem 2.5rem;
+  border-right: 1px solid rgba(255, 0, 0, 0.192);
+  min-width: 35%;
+}
+
+.mealCard {
+  display: flex;
+  flex-direction: row; /* already default */
+  justify-content: space-between;
+  align-items: stretch; /* 👈 makes child heights align nicely */
+  border: 1px solid transparent;
+  border-bottom: 1px solid green;
+  border-radius: 1rem;
+  width: 90%;
+  height: 150px; /* optional fixed height */
+  padding: 0.5rem;
+  /* margin: 1rem 0; */
+}
+
+.mealDetails h5,
+h4,
+p {
+  border-bottom: #f8dcd2 1px solid;
+}
+
+.mealCard:hover {
+  border-left: 1px solid red;
+  /* border-right: 1px solid blue; */
+  border-bottom: green 1px solid;
+  border-top: orange 1px solid;
+  border-radius: 1rem;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0 4px 4px 0,
+    rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
+
+  /* background-color: #f8dcd2; */
+  /* color: #fff; */
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0 4px 4px 0,
+    rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
+}
+
+.icons {
+  cursor: pointer;
+
+  width: 20%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8dcd22c;
+  border-radius: 1rem;
+  /* border: 2px solid blue; */
+  margin: 0; /* 👈 remove margin so it doesn't push things */
+  box-sizing: border-box;
+  font-size: 5rem;
+
+  backdrop-filter: blur(5px);
+}
+
+.mealCard:hover .icons {
+  opacity: 1;
+  transform: scale(1.7);
+  transition: all 0.1s linear;
+
+  border-left: 1px solid red;
+  border-right: 1px solid blue;
+  border-bottom: green 1px solid;
+  border-top: orange 1px solid;
+  z-index: 1;
+
+  animation: icons 0.9s infinite;
+}
+
+@keyframes icons {
+  0% {
+    transform: scale(1);
+    border-left: 1px solid red;
+    border-right: 1px solid blue;
+    border-bottom: green 1px solid;
+    border-top: orange 1px solid;
+  }
+  50% {
+    transform: scale(1.5);
+    border-left: green 1px solid;
+    border-right: 1px solid blue;
+    border-bottom: red 1px solid;
+    border-top: hotpink 1px solid;
+  }
+  100% {
+    transform: scale(1);
+    border-left: 1px solid red;
+    border-right: 1px solid blue;
+    border-bottom: green 1px solid;
+  }
+}
+
+li {
+  display: list-item;
+  list-style-type: "⭐";
+  font-size: 1.5rem;
+}
+
+/* li::marker {
+  color: #f8dcd2;
+  font-size: 1.5rem;
+  font-weight: bold;
+} */
+
+.expandedMealContainer {
+  box-sizing: border-box;
+  width: 50%; /* Set a fixed or proportional width */
+  height: auto; /* Set a fixed height */
+  min-width: 300px; /* Optional: prevent collapsing */
+  max-width: 700px; /* Optional: limit if needed */
+  padding: 2rem;
+  margin-left: 5%;
+  margin-top: 3rem;
+  /* border: 1px solid red; */
+  border-radius: 1rem;
+  overflow-y: auto; /* Allows scrolling if content overflows */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: linear-gradient(
+    345deg,
+    #b5f8e6,
+    #b9f4f5,
+    #c8effa,
+    #d2eafb,
+    #dae7fa,
+    #e0e4fa,
+    #e8e1f9,
+    #f0ddf6,
+    #f6dbec,
+    #f9dbe3,
+    #f8dbda,
+    #f8dcd2
+  );
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0 4px 4px 0,
+    rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
+}
+
+.expandedMeal {
   width: 100%;
-  max-width: 300px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.expandedMeal ul {
+  width: 100%;
+  height: 120px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: red;
+  margin: 2rem 0;
+  line-height: 1.5;
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #f8dcd2;
+  border-radius: 1rem;
+  padding: 0.1rem;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 4px 4px 4px 4px,
+    rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
+  border-radius: 1rem;
+}
+
+.expandedMeal img {
+  box-sizing: border-box;
+  border: 5px solid #f8dcd2;
+  /* padding: 3rem; */
+  /* background-color: red; */
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0 4px 4px 0,
+    rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
+  border-radius: 1rem;
+}
+
+.placeholderCard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed #ccc;
+  border-radius: 1rem;
+  width: 90%;
+  height: 150px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  backdrop-filter: blur(5px);
+  /* background-color: #f8dcd22c; */
+}
+
+.placeholderCard:hover {
+  background-color: #f8dcd2;
+}
+
+.placeholderContent {
   text-align: center;
   font-size: 1.2rem;
-  color: #fefbf3;
-  cursor: default;
-  transition: background-color 0.2s ease;
+  color: #007acc;
 }
 
-.mealButton:hover {
-  background-color: #007acc;
+.playIcon {
+  box-sizing: border-box;
+  font-size: 3rem;
+  color: #007acc;
+  display: block;
+  margin-bottom: 0.5rem;
+  border: 5px dotted #007acc;
+  border-radius: 40%;
+  /* padding: 0.5rem 0; */
 }
 
-.placeholder {
-  border-left: 6px solid #007acc;
-  border-right: 6px solid #007acc;
-  font-style: italic;
-  cursor: pointer;
-}
-
-/* Column 3 */
-.icons {
-  grid-column: 3 / 4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.icon {
-  width: 64px;
-  height: 64px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.icon:hover {
-  transform: scale(1.2);
-}
-
-.preview {
-  grid-column: 4 / 5;
-  grid-row: 1 / span 7;
-  padding: 1rem;
-  border-left: 1px solid #ddd;
-}
-
-.modalContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem 4rem;
-  margin: 0 auto;
-  width: 50%;
-  height: 60%;
-
-  background-color: #ea9881;
-  font-family: "Inter", sans-serif;
-  text-align: center;
+/* ADDED MODAL TO ADD MEAL */
+.addMealModal {
   position: fixed;
-
-  z-index: 1000;
-  backdrop-filter: blur(5px);
-  /* -webkit-backdrop-filter: blur(5px); */
-  border-radius: 0.5rem;
-  box-shadow: 0 8px 8px rgba(0, 0, 0, 9);
-  /* hor ver blur spr col/int */
-  opacity: 0.9;
-  transition: opacity 2.3s ease;
+  top: 0%;
+  left: 0%;
+  width: 70%;
+  height: 70%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
