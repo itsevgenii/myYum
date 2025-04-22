@@ -55,10 +55,17 @@ router.delete("/:mealId", async (req, res) => {
 
 router.post("/:weekDayId", async (req, res) => {
   const { weekDayId } = req.params;
-  const { userId, mealId } = req.body; // Extract userId and mealId from request body
+  const { userId, mealId, mealName, mealDescription, mealCategory } = req.body;
 
   try {
-    const result = await addMealsByWeekDayAndUserId(weekDayId, userId, mealId);
+    const result = await addMealsByWeekDayAndUserId(
+      weekDayId,
+      userId,
+      mealId,
+      mealName,
+      mealDescription,
+      mealCategory
+    );
     res.status(201).json({ message: "Meal added successfully", result });
   } catch (error) {
     console.error("Error adding meal:", error);

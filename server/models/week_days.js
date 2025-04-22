@@ -128,7 +128,7 @@ export async function addMealsByWeekDayAndUserId(
   try {
     const result = await db.query(
       `INSERT INTO meals (id_meal, name, description, category, id_user)
-        VALUES ($1, $2, $3, $4, $5)`,
+        VALUES ($1, $2, $3, $4, $5) RETURNING id_meal, name, description, category`,
       [mealId, mealName, mealDescription, mealCategory, userId]
     );
 

@@ -164,28 +164,44 @@ const Home = () => {
     }
   };
 
-  const handleAddMeal = async (dayId, mealId) => {
+  const handleAddMeal = async (e, dayId, mealId) => {
+    e.preventDefault();
     try {
       const response = await fetch(`https://myyum.onrender.com/${dayId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId, mealId }),
+        body: JSON.stringify({
+          userId,
+          mealId,
+          mealName: selectedMeal.meal_name,
+          mealDescription: selectedMeal.description,
+          mealCategory: selectedMeal.category,
+        }),
       });
       if (!response.ok) throw new Error("Network error");
       const data = await response.json();
-      console.log("Meal added:", data);
-      // Optionally, update the meals state to include the new meal
-      setMeals((prevMeals) => [...prevMeals, data]);
-      // Optionally, refetch meals or update state to reflect addition
-      setMeals((prevMeals) =>
-        prevMeals.filter((meal) => meal.id_meal !== mealId)
-      );
+      console.log("Full response from backend:", data);
+      const newMeal = data.result.rows[0];
+      console.log("LINE 186 Meal added:", newMeal);
+
+      if (newMeal) {
+        setMeals((prevMeals) => {
+          const withoutPlaceholder = prevMeals.filter(
+            (meal) => meal.id_meal !== mealId
+          );
+          return [...withoutPlaceholder, newMeal];
+        });
+        setSelectedMeal(newMeal);
+        setAddMealClicked(false);
+      }
     } catch (err) {
       console.error("Failed to add meal:", err);
     }
   };
+
+  console.log("Selected meal:", selectedMeal);
 
   return (
     <div className={styles.Home}>
@@ -272,8 +288,13 @@ const Home = () => {
                 <>
                   <h5>Ingredients:</h5>
                   <ul>
-                    {selectedMeal.ingredients.map((ingredient) => (
-                      <li key={ingredient.id_ingredient}>
+                    {selectedMeal.ingredients.map((ingredient, index) => (
+                      <li
+                        key={
+                          ingredient.id_ingredient ||
+                          `${ingredient.name}-${index}`
+                        }
+                      >
                         {ingredient.quantity} {ingredient.unit} of{" "}
                         {ingredient.name} ({ingredient.status})
                       </li>
@@ -299,11 +320,37 @@ const Home = () => {
       {addMealClicked && (
         <div className={styles.addMealModal}>
           <h4>Add Meal</h4>
-          <div className={styles.addMealForm}>
-            <label htmlFor="Name">Name:</label>
-            <input type="text" id="Name" />
-            <label htmlFor="description">Description:</label>
-            <input type="text" id="description" />
+          <form
+            className={styles.addMealForm}
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleAddMeal(e, selectedDayId, selectedMeal.id_meal);
+              setAddMealClicked(false);
+            }}
+          >
+            {/* [mealId, mealName, mealDescription, mealCategory, userId] */}
+            <label htmlFor="Name">Meal Name:</label>
+            <input
+              type="text"
+              id="Name"
+              onChange={(e) =>
+                setSelectedMeal({
+                  ...selectedMeal,
+                  meal_name: e.target.value,
+                })
+              }
+            />
+            <label htmlFor="mealDescription">Description:</label>
+            <input
+              type="text"
+              id="mealDescription"
+              onChange={(e) =>
+                setSelectedMeal({
+                  ...selectedMeal,
+                  description: e.target.value,
+                })
+              }
+            />
             <label htmlFor="ingredients">Ingredients:</label>
             <input type="text" id="ingredients" />
             <label htmlFor="quantity">Quantity:</label>
@@ -317,22 +364,27 @@ const Home = () => {
             </label>
             <input type="file" accept="image/*" className={styles.fileInput} />
             <label htmlFor="category">Category:</label>
-            <select id="category">
+            <select
+              id="category"
+              onChange={(e) => {
+                setSelectedMeal({
+                  ...selectedMeal,
+                  category: e.target.value,
+                });
+                console.log(
+                  "line 354 hellooooSelected category: ",
+                  e.target.value
+                );
+              }}
+            >
               {meal_categories.map((category) => (
                 <option key={category.id} value={category.name}>
                   {category.name}
                 </option>
               ))}
             </select>
-          </div>
-          <button
-            onClick={() => {
-              handleAddMeal(selectedDayId, selectedMeal.id_meal);
-              setAddMealClicked(false);
-            }}
-          >
-            Add
-          </button>
+            <button type="submit">Add</button>
+          </form>
           <button onClick={() => setAddMealClicked(false)}>Cancel</button>
         </div>
       )}
