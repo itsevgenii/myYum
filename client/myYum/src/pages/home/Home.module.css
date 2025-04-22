@@ -37,8 +37,7 @@
   background-color: #f8dcd2;
   border: 1px solid transparent; /* 👈 fixes the shifting */
   color: #fff;
-  box-shadow:
-    rgba(60, 64, 67, 0.3) 0 4px 4px 0,
+  box-shadow: rgba(60, 64, 67, 0.3) 0 4px 4px 0,
     rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
   transform: scale(1.55);
 }
@@ -87,14 +86,12 @@ p {
   border-bottom: green 1px solid;
   border-top: orange 1px solid;
   border-radius: 1rem;
-  box-shadow:
-    rgba(60, 64, 67, 0.3) 0 4px 4px 0,
+  box-shadow: rgba(60, 64, 67, 0.3) 0 4px 4px 0,
     rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
 
   /* background-color: #f8dcd2; */
   /* color: #fff; */
-  box-shadow:
-    rgba(60, 64, 67, 0.3) 0 4px 4px 0,
+  box-shadow: rgba(60, 64, 67, 0.3) 0 4px 4px 0,
     rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
 }
 
@@ -195,8 +192,7 @@ li {
     #f8dbda,
     #f8dcd2
   );
-  box-shadow:
-    rgba(60, 64, 67, 0.3) 0 4px 4px 0,
+  box-shadow: rgba(60, 64, 67, 0.3) 0 4px 4px 0,
     rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
 }
 
@@ -225,8 +221,7 @@ li {
   background-color: #f8dcd2;
   border-radius: 1rem;
   padding: 0.1rem;
-  box-shadow:
-    rgba(60, 64, 67, 0.3) 4px 4px 4px 4px,
+  box-shadow: rgba(60, 64, 67, 0.3) 4px 4px 4px 4px,
     rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
   border-radius: 1rem;
 }
@@ -236,8 +231,7 @@ li {
   border: 5px solid #f8dcd2;
   /* padding: 3rem; */
   /* background-color: red; */
-  box-shadow:
-    rgba(60, 64, 67, 0.3) 0 4px 4px 0,
+  box-shadow: rgba(60, 64, 67, 0.3) 0 4px 4px 0,
     rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
   border-radius: 1rem;
 }
@@ -286,6 +280,10 @@ li {
   width: 70%;
   height: 70%;
   background-color: rgba(0, 0, 0, 0.5);
+  border-top: 2px solid red;
+  border-left: 2px solid green;
+  border-right: 2px solid blue;
+  border-bottom: 2px solid brown;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -301,4 +299,18 @@ li {
 
   border-radius: 1rem;
   padding: 2rem;
+  color: white;
+}
+
+.modal-button {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
